@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 Brain Function Check-In</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section-title {
+            color: #4a5568;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .question {
+            background: white;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .question-text {
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: #2d3748;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .question-number {
+            color: #667eea;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .clarification-toggle {
+            background: none;
+            border: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-left: 8px;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .clarification-toggle:hover {
+            opacity: 1;
+            background-color: #f7fafc;
+        }
+
+        .clarification {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            margin-bottom: 10px;
+        }
+
+        .clarification.open {
+            max-height: 200px;
+        }
+
+        .clarification-content {
+            background: #f0f7ff;
+            border: 1px solid #bee3f8;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 0.9rem;
+            color: #2c5aa0;
+            margin-top: 8px;
+        }
+
+        .options {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .option:hover {
+            background-color: #f7fafc;
+        }
+
+        .option input[type="radio"] {
+            margin: 0;
+            transform: scale(1.1);
+        }
+
+        .option label {
+            cursor: pointer;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .comment-box {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            resize: vertical;
+            min-height: 60px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            background-color: #fafafa;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+
+        .comment-box:focus {
+            outline: none;
+            border-color: #667eea;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .comment-label {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-bottom: 5px;
+            font-style: italic;
+        }
+
+        .share-section {
+            background: #f7fafc;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 2px dashed #cbd5e0;
+        }
+
+        .share-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .share-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .share-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+
+        .email-btn {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: white;
+        }
+
+        .email-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            color: white;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(237, 137, 54, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px 5px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .question {
+                padding: 15px;
+            }
+
+            .options {
+                gap: 15px;
+            }
+
+            .share-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .options {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .option {
+                justify-content: flex-start;
+            }
+
+            .question-text {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .clarification-toggle {
+                margin-left: 0;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Cognitive, Visual, Emotional & Brain Function Check-In</h1>
+            <p>Please answer each question with Yes, No, or Not Sure. Click ℹ️ for clarification. Add comments if you'd like to explain further.</p>
+        </div>
+
+        <div class="content">
+            <form id="surveyForm">
+                <div class="section">
+                    <div class="section-title">
+                        🧠 Cognitive & Memory
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">1.</span>Trouble recalling recent events or conversations
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify1')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify1">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Short-term memory issues. Not just forgetfulness from stress or distractions.
+                                <br><strong>Example:</strong> Forgetting what someone just said, or repeating questions without realizing.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q1_yes" name="q1" value="Yes">
+                                <label for="q1_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q1_no" name="q1" value="No">
+                                <label for="q1_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q1_unsure" name="q1" value="Not Sure">
+                                <label for="q1_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q1_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">2.</span>Getting disoriented in familiar places
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify2')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify2">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Spatial memory/navigation issues. More than just a bad sense of direction.
+                                <br><strong>Example:</strong> Turning the wrong way on your own street or feeling lost in your own home.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q2_yes" name="q2" value="Yes">
+                                <label for="q2_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q2_no" name="q2" value="No">
+                                <label for="q2_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q2_unsure" name="q2" value="Not Sure">
+                                <label for="q2_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q2_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">3.</span>Difficulty focusing or paying attention
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify3')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify3">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Reduced attention span. Not just stress-related zoning out.
+                                <br><strong>Example:</strong> Losing track of what you're reading mid-sentence or tuning out during a conversation.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q3_yes" name="q3" value="Yes">
+                                <label for="q3_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q3_no" name="q3" value="No">
+                                <label for="q3_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q3_unsure" name="q3" value="Not Sure">
+                                <label for="q3_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q3_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">4.</span>Slower thinking or problem-solving
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify4')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify4">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Processing speed or executive function issues. Not just mental fatigue.
+                                <br><strong>Example:</strong> Taking longer to do simple tasks like following a recipe or making small decisions.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q4_yes" name="q4" value="Yes">
+                                <label for="q4_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q4_no" name="q4" value="No">
+                                <label for="q4_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q4_unsure" name="q4" value="Not Sure">
+                                <label for="q4_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q4_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">
+                        👁️ Visual-Spatial
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">5.</span>Trouble recognizing places, faces, or scenes
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify5')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify5">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Visual recognition deficits. Not just poor memory or low familiarity.
+                                <br><strong>Example:</strong> Not recognizing a close friend's face or a familiar landmark.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q5_yes" name="q5" value="Yes">
+                                <label for="q5_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q5_no" name="q5" value="No">
+                                <label for="q5_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q5_unsure" name="q5" value="Not Sure">
+                                <label for="q5_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q5_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">6.</span>Bumping into objects more than usual
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify6')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify6">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Possible spatial neglect or visual field issues. Not just clumsiness.
+                                <br><strong>Example:</strong> Bumping into door frames or furniture on one side more often.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q6_yes" name="q6" value="Yes">
+                                <label for="q6_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q6_no" name="q6" value="No">
+                                <label for="q6_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q6_unsure" name="q6" value="Not Sure">
+                                <label for="q6_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q6_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">7.</span>Difficulty judging distances or navigating space
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify7')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify7">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Depth perception and spatial coordination issues. Not just lack of practice.
+                                <br><strong>Example:</strong> Misjudging where a step ends or parking inaccurately.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q7_yes" name="q7" value="Yes">
+                                <label for="q7_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q7_no" name="q7" value="No">
+                                <label for="q7_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q7_unsure" name="q7" value="Not Sure">
+                                <label for="q7_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q7_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">8.</span>Issues with peripheral vision
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify8')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify8">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Visual field integrity issues. Not just increased awareness or anxiety.
+                                <br><strong>Example:</strong> Not noticing things coming from the sides until they're very close.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q8_yes" name="q8" value="Yes">
+                                <label for="q8_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q8_no" name="q8" value="No">
+                                <label for="q8_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q8_unsure" name="q8" value="Not Sure">
+                                <label for="q8_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q8_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">
+                        😊 Emotional & Social
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">9.</span>Mood swings or emotional outbursts
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify9')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify9">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Changes in emotional regulation. Not just stress reactions.
+                                <br><strong>Example:</strong> Crying easily or getting angry suddenly without clear triggers.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q9_yes" name="q9" value="Yes">
+                                <label for="q9_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q9_no" name="q9" value="No">
+                                <label for="q9_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q9_unsure" name="q9" value="Not Sure">
+                                <label for="q9_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q9_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">10.</span>Less motivation or "flat" emotions
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify10')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify10">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Potential apathy or emotional blunting. Not depression alone.
+                                <br><strong>Example:</strong> Losing interest in things you used to enjoy without feeling sad about it.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q10_yes" name="q10" value="Yes">
+                                <label for="q10_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q10_no" name="q10" value="No">
+                                <label for="q10_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q10_unsure" name="q10" value="Not Sure">
+                                <label for="q10_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q10_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">11.</span>Feeling disconnected from others socially
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify11')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify11">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Changes in social processing or empathy. Not just pandemic fatigue.
+                                <br><strong>Example:</strong> Not understanding others' emotions or not caring about social interaction.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q11_yes" name="q11" value="Yes">
+                                <label for="q11_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q11_no" name="q11" value="No">
+                                <label for="q11_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q11_unsure" name="q11" value="Not Sure">
+                                <label for="q11_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q11_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">12.</span>Trouble reading social cues or facial expressions
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify12')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify12">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Theory of mind and emotion recognition issues. Not introversion or awkwardness.
+                                <br><strong>Example:</strong> Missing sarcasm, or not recognizing when someone is upset.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q12_yes" name="q12" value="Yes">
+                                <label for="q12_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q12_no" name="q12" value="No">
+                                <label for="q12_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q12_unsure" name="q12" value="Not Sure">
+                                <label for="q12_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q12_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">
+                        🏥 Medical History & Functional Changes
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">13.</span>Was this injury isolated, or were other brain areas affected too?
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify13')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify13">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Clarifies injury scope. Helps rule out overlapping symptoms.
+                                <br><strong>Example:</strong> Was only one area noted in the scan, or were multiple involved?
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q13_yes" name="q13" value="Yes">
+                                <label for="q13_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q13_no" name="q13" value="No">
+                                <label for="q13_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q13_unsure" name="q13" value="Not Sure">
+                                <label for="q13_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q13_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">14.</span>Was it a stroke, trauma, tumor, or another cause?
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify14')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify14">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Clarifies mechanism of injury. Different causes affect recovery and symptoms.
+                                <br><strong>Example:</strong> A stroke tends to cause sudden loss, while tumors may have gradual onset.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q14_yes" name="q14" value="Yes">
+                                <label for="q14_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q14_no" name="q14" value="No">
+                                <label for="q14_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q14_unsure" name="q14" value="Not Sure">
+                                <label for="q14_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q14_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">15.</span>Are they experiencing seizures, migraines, or sensory disturbances?
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify15')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify15">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Broader neurological dysfunction. Not just stress symptoms.
+                                <br><strong>Example:</strong> Tingling, light flashes, or sudden confusion episodes.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q15_yes" name="q15" value="Yes">
+                                <label for="q15_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q15_no" name="q15" value="No">
+                                <label for="q15_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q15_unsure" name="q15" value="Not Sure">
+                                <label for="q15_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q15_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">16.</span>Have their symptoms improved, worsened, or stayed the same?
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify16')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify16">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Tracks symptom progression. Improvement suggests brain plasticity.
+                                <br><strong>Example:</strong> Memory was poor at first but is now better.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q16_yes" name="q16" value="Yes">
+                                <label for="q16_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q16_no" name="q16" value="No">
+                                <label for="q16_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q16_unsure" name="q16" value="Not Sure">
+                                <label for="q16_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q16_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">17.</span>Are there specific triggers that worsen symptoms (e.g. stress, multitasking, fatigue)?
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify17')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify17">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Identifies pattern or load sensitivity. Not just general stress intolerance.
+                                <br><strong>Example:</strong> Can do one task well, but symptoms appear when juggling two.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q17_yes" name="q17" value="Yes">
+                                <label for="q17_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q17_no" name="q17" value="No">
+                                <label for="q17_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q17_unsure" name="q17" value="Not Sure">
+                                <label for="q17_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q17_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">
+                        🤲 Body & Internal Awareness
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">18.</span>Any balance issues or clumsiness on one side?
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify18')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify18">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Motor coordination deficits. Not just being out of shape.
+                                <br><strong>Example:</strong> Stumbling only with the left leg, or dropping items from one hand.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q18_yes" name="q18" value="Yes">
+                                <label for="q18_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q18_no" name="q18" value="No">
+                                <label for="q18_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q18_unsure" name="q18" value="Not Sure">
+                                <label for="q18_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q18_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">19.</span>Changes in awareness of body position (proprioception)?
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify19')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify19">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Body-map perception issues. Not general stiffness or soreness.
+                                <br><strong>Example:</strong> Not knowing where your arm is unless you look at it.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q19_yes" name="q19" value="Yes">
+                                <label for="q19_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q19_no" name="q19" value="No">
+                                <label for="q19_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q19_unsure" name="q19" value="Not Sure">
+                                <label for="q19_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q19_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">20.</span>Changes in ability to visualize images or mentally "walk through" places?
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify20')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify20">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Internal imagery and spatial planning abilities. Not lack of imagination.
+                                <br><strong>Example:</strong> Unable to picture your own kitchen or a familiar route.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q20_yes" name="q20" value="Yes">
+                                <label for="q20_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q20_no" name="q20" value="No">
+                                <label for="q20_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q20_unsure" name="q20" value="Not Sure">
+                                <label for="q20_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q20_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text">
+                            <span class="question-number">21.</span>Harder to imagine future scenarios or reflect on past ones?
+                            <button type="button" class="clarification-toggle" onclick="toggleClarification('clarify21')">ℹ️</button>
+                        </div>
+                        <div class="clarification" id="clarify21">
+                            <div class="clarification-content">
+                                <strong>What this looks for:</strong> Episodic memory and mental time travel abilities. Not lack of motivation.
+                                <br><strong>Example:</strong> Struggling to plan a vacation because you can't picture it happening.
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" id="q21_yes" name="q21" value="Yes">
+                                <label for="q21_yes">Yes</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q21_no" name="q21" value="No">
+                                <label for="q21_no">No</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" id="q21_unsure" name="q21" value="Not Sure">
+                                <label for="q21_unsure">Not Sure</label>
+                            </div>
+                        </div>
+                        <div class="comment-label">Additional notes (optional):</div>
+                        <textarea class="comment-box" name="q21_comment" placeholder="Any details you'd like to add..."></textarea>
+                    </div>
+                </div>
+            </form>
+
+            <div class="share-section">
+                <div class="share-title">📤 Share Your Responses</div>
+                <div class="share-buttons">
+                    <button class="share-btn copy-btn" onclick="copyResults()">
+                        📋 Copy Results
+                    </button>
+                    <button class="share-btn email-btn" onclick="emailResults()">
+                        📧 Email Results
+                    </button>
+                    <button class="share-btn download-btn" onclick="downloadResults()">
+                        📄 Download File
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleClarification(id) {
+            const clarification = document.getElementById(id);
+            clarification.classList.toggle('open');
+        }
+
+        function getResults() {
+            const formData = new FormData(document.getElementById('surveyForm'));
+            const results = [];
+            const sections = {
+                'Cognitive & Memory': [1, 2, 3, 4],
+                'Visual-Spatial': [5, 6, 7, 8],
+                'Emotional & Social': [9, 10, 11, 12],
+                'Medical History & Functional Changes': [13, 14, 15, 16, 17],
+                'Body & Internal Awareness': [18, 19, 20, 21]
+            };
+
+            const questions = {
+                1: "Trouble recalling recent events or conversations",
+                2: "Getting disoriented in familiar places",
+                3: "Difficulty focusing or paying attention",
+                4: "Slower thinking or problem-solving",
+                5: "Trouble recognizing places, faces, or scenes",
+                6: "Bumping into objects more than usual",
+                7: "Difficulty judging distances or navigating space",
+                8: "Issues with peripheral vision",
+                9: "Mood swings or emotional outbursts",
+                10: "Less motivation or \"flat\" emotions",
+                11: "Feeling disconnected from others socially",
+                12: "Trouble reading social cues or facial expressions",
+                13: "Was this injury isolated, or were other brain areas affected too?",
+                14: "Was it a stroke, trauma, tumor, or another cause?",
+                15: "Are they experiencing seizures, migraines, or sensory disturbances?",
+                16: "Have their symptoms improved, worsened, or stayed the same?",
+                17: "Are there specific triggers that worsen symptoms (e.g. stress, multitasking, fatigue)?",
+                18: "Any balance issues or clumsiness on one side?",
+                19: "Changes in awareness of body position (proprioception)?",
+                20: "Changes in ability to visualize images or mentally \"walk through\" places?",
+                21: "Harder to imagine future scenarios or reflect on past ones?"
+            };
+
+            results.push("🧠 BRAIN FUNCTION CHECK-IN RESULTS");
+            results.push("=" + "=".repeat(40));
+            results.push(`Completed: ${new Date().toLocaleString()}`);
+            results.push("");
+
+            for (const [sectionName, questionNumbers] of Object.entries(sections)) {
+                results.push(`📋 ${sectionName.toUpperCase()}`);
+                results.push("-".repeat(30));
+                
+                for (const qNum of questionNumbers) {
+                    const answer = formData.get(`q${qNum}`) || "Not answered";
+                    const comment = formData.get(`q${qNum}_comment`);
+                    
+                    results.push(`${qNum}. ${questions[qNum]}`);
+                    results.push(`   Answer: ${answer}`);
+                    if (comment && comment.trim()) {
+                        results.push(`   Notes: ${comment.trim()}`);
+                    }
+                    results.push("");
+                }
+            }
+
+            return results.join('\n');
+        }
+
+        function copyResults() {
+            const resultsText = getResults();
+            navigator.clipboard.writeText(resultsText).then(() => {
+                alert('✅ Results copied to clipboard! You can now paste them into any app.');
+            }).catch(() => {
+                alert('❌ Unable to copy. Please try the download option instead.');
+            });
+        }
+
+        function emailResults() {
+            const resultsText = encodeURIComponent(getResults());
+            const subject = encodeURIComponent("Brain Function Check-In Results");
+            window.location.href = `mailto:?subject=${subject}&body=${resultsText}`;
+        }
+
+        function downloadResults() {
+            const resultsText = getResults();
+            const blob = new Blob([resultsText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `brain-function-checkin-${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
